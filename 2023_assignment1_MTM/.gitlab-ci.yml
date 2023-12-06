@@ -1,0 +1,106 @@
+image: python:latest
+
+# creo e gestisco le variabili d'ambiente per la corretta gestione della pipeline
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+
+# cache della pipeline per poter salvare l'ambiente virtuale
+cache:
+  key: ${CI_COMMIT_REF_SLUG}  # chiave unica per la cache riferita al commit
+  paths:
+    - .cache/pip
+
+stages:
+  - build
+  - verify
+  - unit_test
+  - integration_test
+  - package
+  - docs
+  - release
+
+# Stage di build per iniziare la costruzione del progetto
+build:
+  stage: build
+  script:
+    - python -m venv .venv  # creo l'ambiente virtuale
+    - source .venv/bin/activate  # attivo l'ambiente virtuale nella fase di build
+    - pip install --upgrade pip  # aggiorno pip
+    - pip install -r requirements.txt  # installo i requirements
+    - pip install flake8 # installo flake8 in sostituzione a prospector per la fase di verify del progetto
+    - pip install bandit # installo bandit per la fase di verify del progetto
+    - pip install pytest # installo pytest in modo da poter eseguire i test di unit e integration del progetto
+    - pip install wheel # installo wheel per poter produrre il pacchetto anche in formato binario nella fase di package
+    - pip install mkdocs # installo mkdocs per la creazione della pagina web di documentazione del progetto
+    - pip install twine # installo twine per l'upload e pubblicazione del progetto nella fase di release
+    - python user.py build # avvio la build sul file di progetto (user.py)
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .venv/  # directory dell'ambiente virtuale
+
+verify:
+  stage: verify
+  before_script:
+    - source .venv/bin/activate  # attiva l'ambiente virtuale nella fase di verify
+  script:
+    - flake8 user.py # eseguo flake8 sul codice principale
+    - bandit user.py # eseguo bandit sul codice principale
+
+unit_test:
+  stage: unit_test
+  services:
+    - name: mysql:latest # avvio un ambiente sql come servizio della pipeline per poter gestire il database
+      alias: mysql
+  before_script:
+    - source .venv/bin/activate  # attiva l'ambiente virtuale nella fase di unit-test
+  script:
+    - pytest user_test.py -rP    # Esegue i test creati appositamente dal file user_test.py per verificare la correttezza nell'esecuzione del codice
+
+
+integration_test:
+  stage: integration_test
+  services:
+    - name: mysql:latest # avvio un ambiente sql come servizio della pipeline per poter gestire il database
+      alias: mysql
+  before_script:
+    - source .venv/bin/activate  # attiva l'ambiente virtuale nella fase di integration-test
+  script:
+    - pytest user_test.py -rP # Esegue i test creati appositamente dal file user_test.py per verificare la correttezza nell'esecuzione del codice
+  only:
+    - main # questo test viene eseguito solamente nel branch principale del progetto, nel nostro caso, essendo l'unico branch presente viene eseguito in ogni pipeline
+
+package:
+  stage: package
+  before_script:
+    - source .venv/bin/activate  # attiva l'ambiente virtuale nella fase di package
+  script:
+    - python setup.py sdist # creo il pacchetto del nostro progetto in un archivio compatto
+    - python setup.py bdist_wheel # creo anche il pacchetto del nostro progetto in formato binario
+  artifacts:
+    paths:
+      - dist/ # salvo i pacchetti creati come artefatti nella cartella dist
+    when: on_success
+
+mkdocs_build:
+  stage: docs
+  before_script:
+    - source .venv/bin/activate  # attiva l'ambiente virtuale nella fase di documentazione
+  script:
+    - mkdocs build # creo la documentazione per il progetto
+  artifacts:
+    paths:
+      - site # salvo la documentazione del progetto come artefatto
+  only:
+    - main # creo la documentazione solamente per il branch principale di progetto
+
+
+release:
+  stage: release
+  before_script:
+    - source .venv/bin/activate  # attiva l'ambiente virtuale nella fase di release
+  script:
+    - export TWINE_USERNAME=$(cat conf.pypirc | grep username | cut -d "=" -f2 | tr -d ' ') # esporto l'utente per poter rilasciare il progetto (utilizzo le API)
+    - export TWINE_PASSWORD=$(cat conf.pypirc | grep password | cut -d "=" -f2 | tr -d ' ') # esporto la password per poter rilasciare il progetto (utilizzo le API)
+    - twine upload --username $TWINE_USERNAME --password $TWINE_PASSWORD dist/* # carico il progetto per il rilascio corretto

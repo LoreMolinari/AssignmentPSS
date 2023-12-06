@@ -1,0 +1,6 @@
+site_name: user MTM
+theme:
+   name: readthedocs
+nav:
+   - Home: index.md
+   - Guida Utente: user-guide.md
