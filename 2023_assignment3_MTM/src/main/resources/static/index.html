@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Mission Management</title>
+    <!-- Bootstrap CSS link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .button {
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            cursor: pointer;
+            color: black;
+            background-color: transparent;
+            transition: background-color 0.3s ease;
+        }
+
+        .mt-4 {
+            text-align-last: center;
+        }
+
+        .mt-10 {
+            margin-top: 10rem;
+            text-align-last: center;
+        }
+
+        .mb-20 {
+            text-align: left !important;
+        }
+
+        .button:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="container mt-5" style="text-align-last: center">
+    <h1 class="mb-4">Space Mission Management</h1>
+
+    <div class="mt-4">
+        <h2>Astronauts</h2>
+        <button class="button me-2 mb-5" onclick="getAstronauts()">Get Astronauts</button>
+
+        <form id="astronautForm" onsubmit="event.preventDefault(); addAstronaut()">
+            <label for="astronautName">Name:</label>
+            <input type="text" id="astronautName" required>
+
+            <label for="astronautSurname">Surname:</label>
+            <input type="text" id="astronautSurname" required>
+
+            <label for="astronautNationality">Nationality:</label>
+            <input type="text" id="astronautNationality" required>
+
+            <label for="astronautBirthyear">Birth Year:</label>
+            <input type="number" id="astronautBirthyear" required>
+
+            <button type="submit" class="btn btn-success mt-2">Add Astronaut</button>
+        </form>
+    </div>
+
+    <div class="mt-4">
+        <div class="mt-3">
+            <label for="updateIDAstronaut">ID Astronaut:</label>
+            <input type="text" id="updateIDAstronaut" required>
+
+            <label for="nameAstronautUpdate">Update Name:</label>
+            <input type="text" id="nameAstronautUpdate">
+
+            <label for="surnameAstronautUpdate">Update Surname:</label>
+            <input type="text" id="surnameAstronautUpdate">
+
+            <label for="nationalityAstronautUpdate">Update Nationality:</label>
+            <input type="text" id="nationalityAstronautUpdate">
+
+            <label for="birthyearAstronautUpdate">Update Birth Year:</label>
+            <input type="text" id="birthyearAstronautUpdate">
+
+            <button class="button mt-2" onclick="updateAstronaut()">Update Astronaut</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchIdAstronaut">ID Astronaut:</label>
+            <input type="text" id="searchIdAstronaut" required>
+            <button class="button mt-2" onclick="searchIdAstronauts()">Search Astronaut</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchNameAstronaut">Name Astronaut:</label>
+            <input type="text" id="searchNameAstronaut" required>
+            <button class="button mt-2" onclick="searchNameAstronauts()">Search Astronaut</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchNationalityAstronaut">Nationality Astronaut:</label>
+            <input type="text" id="searchNationalityAstronaut" required>
+            <button class="button mt-2" onclick="searchNationalityAstronauts()">Search Astronaut</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchMissionIdAstronaut">Mission ID:</label>
+            <input type="text" id="searchMissionIdAstronaut" required>
+            <button class="button mt-2" onclick="searchMissionAstronauts()">Search Astronaut</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchYearAstronaut">Year Astronaut:</label>
+            <input type="text" id="searchYearAstronaut" required>
+            <button class="button mt-2" onclick="searchYearAstronauts()">Search Astronaut</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="deleteIDAstronaut">ID Astronaut:</label>
+            <input type="text" id="deleteIDAstronaut" required>
+            <button class="button mt-2" onclick="deleteAstronaut()">Delete Astronaut</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="astronautCollab">ID Astronaut:</label>
+            <input type="text" id="astronautCollab" required>
+            <button class="button mt-2" onclick="getCollaborators()">Get Collaborators</button>
+        </div>
+    </div>
+    <div id="astronautData" class="mt-3 mb-20"></div>
+
+    <div class="mt-10">
+        <h2>Spacecraft</h2>
+
+        <button class="button mt-2 mb-5" onclick="getAllSpacecrafts()">Get All Spacecrafts</button>
+
+        <form id="spacecraftForm" onsubmit="event.preventDefault(); addSpacecraft()">
+
+            <label for="spacecraftName">Name:</label>
+            <input type="text" id="spacecraftName" required>
+
+            <label for="spacecraftAgency">SpaceAgency:</label>
+            <input type="text" id="spacecraftAgency" required>
+
+            <button type="submit" class="btn btn-success">Add Spacecraft</button>
+        </form>
+    </div>
+
+    <div class="mt-4">
+        <div class="mt-3">
+            <label for="updateIDSpacecraft">ID Spacecraft:</label>
+            <input type="text" id="updateIDSpacecraft" required>
+
+            <label for="nameSpacecraftUpdate">Modifica il nome:</label>
+            <input type="text" id="nameSpacecraftUpdate" required>
+
+            <label for="agencySpacecraftUpdate">Modifica l'agenzia:</label>
+            <input type="text" id="agencySpacecraftUpdate" required>
+
+            <button class="button mt-2" onclick="updateSpacecraft()">Update Spacecraft</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchIdSpacecraft">ID Spacecraft:</label>
+            <input type="text" id="searchIdSpacecraft" required>
+            <button class="button mt-2" onclick="searchIdSpacecraft()">Search Spacecraft</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchNameSpacecraft">Name Spacecraft:</label>
+            <input type="text" id="searchNameSpacecraft" required>
+            <button class="button mt-2" onclick="searchNameSpacecraft()">Search Spacecraft</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchmissionIdSpacecraft">Mission ID:</label>
+            <input type="text" id="searchmissionIdSpacecraft" required>
+            <button class="button mt-2" onclick="searchMissionSpacecraft()">Search Spacecraft</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchAgencySpacecraft">Agency Spacecraft:</label>
+            <input type="text" id="searchAgencySpacecraft" required>
+            <button class="button mt-2" onclick="searchAgencySpacecraft()">Search Spacecraft</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="deleteIDSpacecraft">ID Spacecraft:</label>
+            <input type="text" id="deleteIDSpacecraft" required>
+            <button class="button mt-2" onclick="deleteSpacecraft()">Delete Spacecraft</button>
+        </div>
+    </div>
+
+    <div id="spacecraftData" class="mt-3 mb-20"></div>
+
+
+    <div class="mt-10">
+        <h2>Missions</h2>
+        <button class="button me-2" onclick="getMissions()">Get All Missions</button>
+
+        <form id="missionForm" onsubmit="event.preventDefault(); addMission()">
+            <label for="missionName">Name:</label>
+            <input type="text" id="missionName" required>
+
+            <label for="missionDuration">Duration (days):</label>
+            <input type="number" id="missionDuration" required>
+
+            <label for="missionLaunchDate">Launch Date:</label>
+            <input type="date" id="missionLaunchDate" required>
+
+            <button type="submit" class="btn btn-success">Add Mission</button>
+        </form>
+    </div>
+
+    <div class="mt-4">
+        <div class="mt-3">
+            <label for="updateIDMission">ID Mission:</label>
+            <input type="text" id="updateIDMission" required>
+
+            <label for="nameMissionUpdate">Modifica il nome:</label>
+            <input type="text" id="nameMissionUpdate">
+
+            <label for="durationMissionUpdate">Modifica la durata:</label>
+            <input type="text" id="durationMissionUpdate">
+
+            <label for="launchDateMissionUpdate">Modifica la data di lancio:</label>
+            <input type="date" id="launchDateMissionUpdate">
+
+            <button class="button mt-2" onclick="updateMission()">Update Mission</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchIdMission">ID Mission:</label>
+            <input type="text" id="searchIdMission" required>
+            <button class="button mt-2" onclick="searchIdMission()">Search Mission</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchNameMission">Name Mission:</label>
+            <input type="text" id="searchNameMission" required>
+            <button class="button mt-2" onclick="searchNameMission()">Search Mission</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchDateMission">ID Astronaut:</label>
+            <input type="date" id="searchDateMission">
+            <button class="button mt-2" onclick="searchLaunchDateMission()">Search Mission</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchAstronautMission">ID Astronaut:</label>
+            <input type="text" id="searchAstronautMission" required>
+            <button class="button mt-2" onclick="searchAstronautMission()">Search Mission</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchSpacecraftMission">ID Spacecraft:</label>
+            <input type="text" id="searchSpacecraftMission" required>
+            <button class="button mt-2" onclick="searchSpacecraftMission()">Search Mission</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="deleteIDMission">ID Mission:</label>
+            <input type="text" id="deleteIDMission" required>
+            <button class="button mt-2" onclick="deleteMission()">Delete Mission</button>
+        </div>
+    </div>
+
+    <div id="missionData" class="mt-3 mb-20"></div>
+
+
+    <div class="mt-10">
+        <h2>Mission Logs</h2>
+        <button class="button me-2 mb-5" onclick="getAllMissionLogs()">Get All Mission Logs</button>
+
+        <div class="mt-3">
+            <label for="missionLogsDetails">Details:</label>
+            <input type="text" id="missionLogsDetails" required>
+            <label for="missionLogsMissionId">Mission ID:</label>
+            <input type="text" id="missionLogsMissionId" required>
+            <button class="button btn-success mmt-2" onclick="addMissionLogs()">Add Mission Log</button>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <div class="mt-3">
+            <label for="updateMissionLogsId">ID:</label>
+            <input type="text" id="updateMissionLogsId" required>
+            <label for="updateMissionLogsDetails">Updated Details:</label>
+            <input type="text" id="updateMissionLogsDetails" required>
+            <button class="button mt-2" onclick="updateMissionLogs()">Update Mission Log</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchIdMissionLogs">ID:</label>
+            <input type="text" id="searchIdMissionLogs" required>
+            <button class="button mt-2" onclick="searchIdMissionLogs()">Search Mission Log</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchMIssionIdMissionLogs">Mission ID:</label>
+            <input type="text" id="searchMIssionIdMissionLogs" required>
+            <button class="button mt-2" onclick="searchMissionMissionLogs()">Search Mission Log</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="deleteMissionLogsId">ID:</label>
+            <input type="text" id="deleteMissionLogsId" required>
+            <button class="button mt-2" onclick="deleteMissionLogs()">Delete Mission Log</button>
+        </div>
+    </div>
+    <div id="missionLogsData" class="mt-3 mb-20"></div>
+
+
+    <div class="mt-10">
+        <h2>Spacesuits</h2>
+        <button class="button me-2 mb-5" onclick="getSpacesuits()">Get Spacesuits</button>
+
+        <form id="spacesuitForm" onsubmit="event.preventDefault(); addSpacesuit()">
+            <label for="spacesuitModel">Model:</label>
+            <input type="text" id="spacesuitModel" required>
+            <label for="AId">Astronaut ID:</label>
+            <input type="text" id="AId" required>
+            <button type="submit" class="button btn-success">Add Spacesuit</button>
+        </form>
+    </div>
+
+    <div class="mt-4">
+        <div class="mt-3">
+            <label for="searchIdSpacesuit">ID Spacesuit:</label>
+            <input type="text" id="searchIdSpacesuit" required>
+            <button class="button mt-2" onclick="searchIdSpacesuit()">Search Spacesuit</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchNameSpacesuit">Name Spacesuit:</label>
+            <input type="text" id="searchNameSpacesuit" required>
+            <button class="button mt-2" onclick="searchNameSpacesuit()">Search Spacesuit</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="searchIdAstronautSpacesuit">ID Astronaut:</label>
+            <input type="text" id="searchIdAstronautSpacesuit" required>
+            <button class="button mt-2" onclick="searchIdAstronautSpacesuit()">Search Spacesuit</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="updateIDSpacesuit">ID Spacesuit:</label>
+            <input type="text" id="updateIDSpacesuit" required>
+            <label for="modelSpacesuitUpdate">Modify the model:</label>
+            <input type="text" id="modelSpacesuitUpdate">
+            <button class="button mt-2" onclick="updateSpacesuit()">Update Spacesuit</button>
+        </div>
+
+        <div class="mt-3">
+            <label for="deleteIDSpacesuit">ID Spacesuit:</label>
+            <input type="text" id="deleteIDSpacesuit" required>
+            <button class="button mt-2" onclick="deleteSpacesuit()">Delete Spacesuit</button>
+        </div>
+    </div>
+    <div id="spacesuitData" class="mt-3 mb-20"></div>
+
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const apiUrl = "http://localhost:8080";
+
+    // Astronaut
+    function createAstronautInfoElement(astronaut) {
+        const astronautInfo = document.createElement("div");
+
+        if (!astronaut || Object.keys(astronaut).length === 0) {
+            const noAstronautMessage = document.createElement("div");
+            noAstronautMessage.textContent = "No astronaut found.";
+            astronautInfo.appendChild(noAstronautMessage);
+        } else {
+            const astronautInfoText = document.createElement("div");
+            astronautInfoText.innerHTML = `<strong>ID:</strong> ${astronaut.id || 'N/A'},
+                                    <strong>Name:</strong> ${astronaut.name || 'N/A'},
+                                    <strong>Surname:</strong> ${astronaut.surname || 'N/A'},
+                                    <strong>Nationality:</strong> ${astronaut.nationality || 'N/A'},
+                                    <strong>Birth Year:</strong> ${astronaut.birthyear || 'N/A'}`;
+
+            if (astronaut.missions && astronaut.missions.length > 0) {
+                const missionsList = document.createElement("ul");
+                astronaut.missions.forEach(mission => {
+                    const missionItem = document.createElement("li");
+                    missionItem.innerHTML = `<strong>Mission ID:</strong> ${mission.id || 'N/A'},
+                                        <strong>Mission Name:</strong> ${mission.name || 'N/A'},
+                                        <strong>Duration:</strong> ${mission.duration || 'N/A'},
+                                        <strong>Launch Date:</strong> ${mission.launchDate || 'N/A'}`;
+                    missionsList.appendChild(missionItem);
+                });
+                astronautInfoText.appendChild(missionsList);
+            }
+
+            astronautInfo.appendChild(astronautInfoText);
+        }
+
+        return astronautInfo;
+    }
+
+    function displayAstronautData(astronauts) {
+        const astronautDataElement = document.getElementById("astronautData");
+        astronautDataElement.innerHTML = "";
+
+        if (Array.isArray(astronauts) && astronauts.length > 0) {
+            astronauts.forEach(astronaut => {
+                const astronautInfo = createAstronautInfoElement(astronaut);
+                astronautDataElement.appendChild(astronautInfo);
+            });
+        } else if (astronauts) {
+            const astronautInfo = createAstronautInfoElement(astronauts);
+            astronautDataElement.appendChild(astronautInfo);
+        } else {
+            const noAstronautsMessage = document.createElement("div");
+            noAstronautsMessage.textContent = "No astronauts found.";
+            astronautDataElement.appendChild(noAstronautsMessage);
+        }
+    }
+
+
+    // Spacecraft
+    function createSpacecraftInfoElement(spacecraft) {
+        const spacecraftInfo = document.createElement("div");
+
+        if (!spacecraft || Object.keys(spacecraft).length === 0) {
+            const noSpacecraftsMessage = document.createElement("div");
+            noSpacecraftsMessage.textContent = "No spacecrafts found.";
+            spacecraftInfo.appendChild(noSpacecraftsMessage);
+        } else {
+            const spacecraftInfoText = document.createElement("div");
+            spacecraftInfoText.innerHTML = `<strong>ID:</strong> ${spacecraft.id || 'N/A'},
+                                     <strong>Name:</strong> ${spacecraft.name || 'N/A'},
+                                     <strong>Space Agency:</strong> ${spacecraft.spaceAgency || 'N/A'}`;
+            spacecraftInfo.appendChild(spacecraftInfoText);
+        }
+
+        return spacecraftInfo;
+    }
+
+    function displaySpacecraftData(spacecrafts) {
+        const spacecraftDataElement = document.getElementById("spacecraftData");
+        spacecraftDataElement.innerHTML = "";
+
+        if (Array.isArray(spacecrafts) && spacecrafts.length > 0) {
+            spacecrafts.forEach(spacecraft => {
+                const spacecraftInfo = createSpacecraftInfoElement(spacecraft);
+                spacecraftDataElement.appendChild(spacecraftInfo);
+            });
+        } else if (spacecrafts) {
+            const spacecraftInfo = createSpacecraftInfoElement(spacecrafts);
+            spacecraftDataElement.appendChild(spacecraftInfo);
+        } else {
+            const noSpacecraftsMessage = document.createElement("div");
+            noSpacecraftsMessage.textContent = "No spacecrafts found.";
+            spacecraftDataElement.appendChild(noSpacecraftsMessage);
+        }
+    }
+
+    // Mission
+    function createMissionInfoElement(mission) {
+        const missionInfo = document.createElement("div");
+
+        if (!mission || Object.keys(mission).length === 0) {
+            const noMissionsMessage = document.createElement("div");
+            noMissionsMessage.textContent = "No missions found.";
+            missionInfo.appendChild(noMissionsMessage);
+        } else {
+            const missionInfoText = document.createElement("div");
+            missionInfoText.innerHTML = `<strong>ID:</strong> ${mission.id || 'N/A'},
+                                <strong>Name:</strong> ${mission.name || 'N/A'},
+                                <strong>Duration:</strong> ${mission.duration || 'N/A'},
+                                <strong>Launch Date:</strong> ${mission.launchDate || 'N/A'}`;
+            missionInfo.appendChild(missionInfoText);
+        }
+
+        return missionInfo;
+    }
+
+    function displayMissionData(missions) {
+        const missionDataElement = document.getElementById("missionData");
+        missionDataElement.innerHTML = "";
+
+        if (Array.isArray(missions) && missions.length > 0) {
+            missions.forEach(mission => {
+                const missionInfo = createMissionInfoElement(mission);
+                missionDataElement.appendChild(missionInfo);
+            });
+        } else if (missions) {
+            const missionInfo = createMissionInfoElement(missions);
+            missionDataElement.appendChild(missionInfo);
+        } else {
+            const noMissionsMessage = document.createElement("div");
+            noMissionsMessage.textContent = "No missions found.";
+            missionDataElement.appendChild(noMissionsMessage);
+        }
+    }
+
+
+    // MissionLogs
+    function createMissionLogsInfoElement(missionLog) {
+        const missionLogInfo = document.createElement("div");
+
+        if (!missionLog || Object.keys(missionLog).length === 0) {
+            const noMissionLogsMessage = document.createElement("div");
+            noMissionLogsMessage.textContent = "No mission logs found.";
+            missionLogInfo.appendChild(noMissionLogsMessage);
+        } else {
+            const missionLogInfoText = document.createElement("div");
+            missionLogInfoText.innerHTML = `<strong>ID:</strong> ${missionLog.id || 'N/A'},
+                                    <strong>Log:</strong> ${missionLog.logMessage || 'N/A'},
+                                    <strong>Mission:</strong> ${missionLog.mission ? missionLog.mission.name + ' (ID: ' + missionLog.mission.id + ')' : 'N/A'}`;
+            missionLogInfo.appendChild(missionLogInfoText);
+        }
+
+        return missionLogInfo;
+    }
+
+    function displayMissionLogsData(missionLogs) {
+        const missionLogsDataElement = document.getElementById("missionLogsData");
+        missionLogsDataElement.innerHTML = "";
+
+        if (Array.isArray(missionLogs) && missionLogs.length > 0) {
+            missionLogs.forEach(missionLog => {
+                const missionLogInfo = createMissionLogsInfoElement(missionLog);
+                missionLogsDataElement.appendChild(missionLogInfo);
+            });
+        } else if (missionLogs) {
+            const missionLogInfo = createMissionLogsInfoElement(missionLogs);
+            missionLogsDataElement.appendChild(missionLogInfo);
+        } else {
+            const noMissionLogsMessage = document.createElement("div");
+            noMissionLogsMessage.textContent = "No mission logs found.";
+            missionLogsDataElement.appendChild(noMissionLogsMessage);
+        }
+    }
+
+
+    // Spacesuit
+    function createSpacesuitInfoElement(spacesuit) {
+        const spacesuitInfo = document.createElement("div");
+
+        if (!spacesuit || Object.keys(spacesuit).length === 0) {
+            const noSpacesuitMessage = document.createElement("div");
+            noSpacesuitMessage.textContent = "No spacesuits found.";
+            spacesuitInfo.appendChild(noSpacesuitMessage);
+        } else {
+            const spacesuitInfoText = document.createElement("div");
+            spacesuitInfoText.innerHTML = `<strong>ID:</strong> ${spacesuit.id || 'N/A'},
+                                    <strong>Model:</strong> ${spacesuit.model || 'N/A'},
+                                    <strong>Astronaut:</strong> ${spacesuit.astronaut ? spacesuit.astronaut.name + ' ' + spacesuit.astronaut.surname + ' (ID: ' + spacesuit.astronaut.id + ')' : 'N/A'}`;
+            spacesuitInfo.appendChild(spacesuitInfoText);
+        }
+
+        return spacesuitInfo;
+    }
+
+    function displaySpacesuitData(spacesuits) {
+        const spacesuitDataElement = document.getElementById("spacesuitData");
+        spacesuitDataElement.innerHTML = "";
+
+        if (Array.isArray(spacesuits) && spacesuits.length > 0) {
+            spacesuits.forEach(spacesuit => {
+                const spacesuitInfo = createSpacesuitInfoElement(spacesuit);
+                spacesuitDataElement.appendChild(spacesuitInfo);
+            });
+        } else if (spacesuits) {
+            const spacesuitInfo = createSpacesuitInfoElement(spacesuits);
+            spacesuitDataElement.appendChild(spacesuitInfo);
+        } else {
+            const noSpacesuitMessage = document.createElement("div");
+            noSpacesuitMessage.textContent = "No spacesuits found.";
+            spacesuitDataElement.appendChild(noSpacesuitMessage);
+        }
+    }
+
+
+    function getAstronauts() {
+        fetch(`${apiUrl}/astronauts`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Astronauts:", data);
+                displayAstronautData(data);
+            })
+            .catch(error => console.error("Error fetching astronauts:", error));
+    }
+
+    function searchIdAstronauts() {
+        const Id = document.getElementById('searchIdAstronaut').value;
+        fetch(`${apiUrl}/astronauts/${Id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Astronauts:", data);
+                displayAstronautData(data);
+            })
+            .catch(error => console.error("Error fetching astronauts:", error));
+    }
+
+    function searchNationalityAstronauts() {
+        const nationality = document.getElementById('searchNationalityAstronaut').value;
+        fetch(`${apiUrl}/astronauts/search/country/${nationality}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Astronauts:", data);
+                displayAstronautData(data);
+            })
+            .catch(error => console.error("Error fetching astronauts:", error));
+    }
+
+    function searchYearAstronauts() {
+        const year = document.getElementById('searchYearAstronaut').value;
+        fetch(`${apiUrl}/astronauts/search/year/${year}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Astronauts:", data);
+                displayAstronautData(data);
+            })
+            .catch(error => console.error("Error fetching astronauts:", error));
+    }
+
+    function searchMissionAstronauts() {
+        const missionId = document.getElementById('searchMissionIdAstronaut').value;
+        fetch(`${apiUrl}/astronauts/search/mission/${missionId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Astronauts:", data);
+                displayAstronautData(data);
+            })
+            .catch(error => console.error("Error fetching astronauts:", error));
+    }
+
+    function searchNameAstronauts() {
+        const name = document.getElementById("searchNameAstronaut").value;
+
+        fetch(`${apiUrl}/astronauts/search/name/${name}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Astronauts:", data);
+                displayAstronautData(data);
+            })
+            .catch(error => console.error("Error fetching astronauts:", error));
+    }
+
+    function addAstronaut() {
+        const astronautName = document.getElementById("astronautName").value;
+        const astronautSurname = document.getElementById("astronautSurname").value;
+        const astronautNationality = document.getElementById("astronautNationality").value;
+        const astronautBirthyear = document.getElementById("astronautBirthyear").value;
+
+        const astronautData = {
+            name: astronautName,
+            surname: astronautSurname,
+            nationality: astronautNationality,
+            birthyear: parseInt(astronautBirthyear)
+        };
+
+        console.log("Astronaut data:", astronautData);
+
+        fetch(`${apiUrl}/astronauts/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(astronautData)
+        }).then(response => response.json()).then(data => {
+            console.log("Astronaut added:", data);
+            displayAstronautData(data)
+        })
+    }
+
+    function updateAstronaut() {
+        const astronautId = document.getElementById('updateIDAstronaut').value;
+        const nameUP = document.getElementById('nameAstronautUpdate').value;
+        const surnameUP = document.getElementById('surnameAstronautUpdate').value;
+        const nationalityUP = document.getElementById('nationalityAstronautUpdate').value;
+        const birthyearUP = document.getElementById('birthyearAstronautUpdate').value;
+
+        const updatedAstronautData = {
+            id: astronautId,
+            name: nameUP,
+            surname: surnameUP,
+            nationality: nationalityUP,
+            birthyear: birthyearUP
+        };
+
+        Object.keys(updatedAstronautData).forEach(key => updatedAstronautData[key] === "" && delete updatedAstronautData[key]);
+
+        fetch(`${apiUrl}/astronauts/${astronautId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedAstronautData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Astronaut updated:", data);
+                displayAstronautData(data)
+            })
+            .catch(error => console.error("Error updating astronaut:", error));
+    }
+
+    function deleteAstronaut() {
+        const astronautId = document.getElementById('deleteIDAstronaut').value;
+
+        fetch(`${apiUrl}/astronauts/${astronautId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Astronaut deleted successfully");
+                    displayAstronautData();
+                } else {
+                    console.error("Error deleting astronaut");
+                }
+            })
+            .catch(error => console.error("Error deleting astronaut:", error));
+    }
+
+    function getCollaborators() {
+        const astronautId = document.getElementById('astronautCollab').value;
+
+        fetch(`${apiUrl}/astronauts/collaborators/${astronautId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Collaborators:", data);
+                displayAstronautData(data);
+            })
+            .catch(error => console.error("Error fetching collaborators:", error));
+    }
+
+    function getAllSpacecrafts() {
+        fetch(`${apiUrl}/spacecrafts`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacecrafts:", data);
+                displaySpacecraftData(data);
+            })
+            .catch(displaySpacecraftData());
+    }
+
+    function searchIdSpacecraft() {
+        const Id = document.getElementById('searchIdSpacecraft').value;
+        fetch(`${apiUrl}/spacecrafts/${Id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacecrafts:", data);
+                displaySpacecraftData(data);
+            })
+            .catch(displaySpacecraftData());
+    }
+
+    function searchNameSpacecraft() {
+        const name = document.getElementById('searchNameSpacecraft').value;
+        fetch(`${apiUrl}/spacecrafts/search/name/${name}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacecrafts:", data);
+                displaySpacecraftData(data);
+            })
+            .catch(displaySpacecraftData());
+    }
+
+    function searchAgencySpacecraft() {
+        const agency = document.getElementById('searchAgencySpacecraft').value;
+        fetch(`${apiUrl}/spacecrafts/search/spaceAgency/${agency}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacecrafts:", data);
+                displaySpacecraftData(data);
+            })
+            .catch(displaySpacecraftData());
+    }
+
+    function searchMissionSpacecraft() {
+        const Id = document.getElementById('searchmissionIdSpacecraft').value;
+        fetch(`${apiUrl}/spacecrafts/search/mission/${Id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacecrafts:", data);
+                displaySpacecraftData(data);
+            })
+            .catch(displaySpacecraftData());
+    }
+
+    function addSpacecraft() {
+        const spacecraftName = document.getElementById("spacecraftName").value;
+        const spacecraftAgency = document.getElementById("spacecraftAgency").value;
+
+        const spacecraftData = {
+            name: spacecraftName,
+            agency: spacecraftAgency
+        };
+
+        console.log("Spacecraft data:", spacecraftData);
+
+        fetch(`${apiUrl}/spacecrafts/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(spacecraftData)
+        }).then(response => response.json()).then(data => {
+            console.log("Spacecraft added:", data);
+            displaySpacecraftData(data);
+        });
+    }
+
+    function updateSpacecraft() {
+        const spacecraftId = document.getElementById('updateIDSpacecraft').value;
+        const nameUP = document.getElementById('nameSpacecraftUpdate').value;
+        const agencyUP = document.getElementById('agencySpacecraftUpdate').value;
+
+        const updatedSpacecraftData = {
+            id: spacecraftId,
+            name: nameUP,
+            agency: agencyUP
+        };
+
+        Object.keys(updatedSpacecraftData).forEach(key => updatedSpacecraftData[key] === "" && delete updatedSpacecraftData[key]);
+
+        fetch(`${apiUrl}/spacecrafts/${spacecraftId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedSpacecraftData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacecraft updated:", data);
+                displaySpacecraftData(data)
+            })
+            .catch(error => console.error("Error updating spacecraft:", error));
+    }
+
+    function deleteSpacecraft() {
+        const spacecraftId = document.getElementById('deleteIDSpacecraft').value;
+
+        fetch(`${apiUrl}/spacecrafts/${spacecraftId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Spacecraft deleted successfully");
+                    displaySpacecraftData();
+                } else {
+                    console.error("Error deleting astronaut");
+                }
+            })
+            .catch(error => console.error("Error deleting astronaut:", error));
+    }
+
+    function getMissions() {
+        fetch(`${apiUrl}/missions`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Missions:", data);
+                displayMissionData(data);
+            })
+            .catch(displayMissionData());
+    }
+
+    function searchIdMission() {
+        const Id = document.getElementById('searchIdMission').value;
+        fetch(`${apiUrl}/missions/${Id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Missions:", data);
+                displayMissionData(data);
+            })
+            .catch(displayMissionData());
+    }
+
+    function searchLaunchDateMission() {
+        const date = document.getElementById('searchDateMission').value;
+        fetch(`${apiUrl}/missions/search/launch-date/${date}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Missions:", data);
+                displayMissionData(data);
+            })
+            .catch(displayMissionData());
+    }
+
+    function searchSpacecraftMission() {
+        const IdS = document.getElementById('searchSpacecraftMission').value;
+        fetch(`${apiUrl}/missions/search/spacecraft/${IdS}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Missions:", data);
+                displayMissionData(data);
+            })
+            .catch(displayMissionData());
+    }
+
+    function searchNameMission() {
+        const name = document.getElementById('searchNameMission').value;
+        fetch(`${apiUrl}/missions/search/name/${name}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Missions:", data);
+                displayMissionData(data);
+            })
+            .catch(displayMissionData());
+    }
+
+    function searchAstronautMission() {
+        const IdA = document.getElementById('searchAstronautMission').value;
+        fetch(`${apiUrl}/missions/search/astronaut/${IdA}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Missions:", data);
+                displayMissionData(data);
+            })
+            .catch(displayMissionData());
+    }
+
+    function addMission() {
+        const missionName = document.getElementById("missionName").value;
+        const missionDuration = document.getElementById("missionDuration").value;
+        const missionLaunchDate = document.getElementById("missionLaunchDate").value;
+
+        const missionData = {
+            name: missionName,
+            duration: missionDuration,
+            launchDate: missionLaunchDate
+        };
+
+        console.log("Mission data:", missionData);
+
+        fetch(`${apiUrl}/missions/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(missionData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Mission added:", data);
+                displayMissionData(data);
+            })
+            .catch(error => console.error("Error adding mission:", error));
+    }
+
+    function updateMission() {
+        const missionId = document.getElementById('updateIDMission').value;
+        const nameUP = document.getElementById('nameMissionUpdate').value;
+        const durationUP = document.getElementById('durationMissionUpdate').value;
+        const launchDateUP = document.getElementById('launchDateMissionUpdate').value;
+
+        const updatedMissionData = {
+            id: missionId,
+            name: nameUP,
+            duration: durationUP,
+            launchDate: launchDateUP
+        };
+
+        Object.keys(updatedMissionData).forEach(key => updatedMissionData[key] === "" && delete updatedMissionData[key]);
+
+        fetch(`${apiUrl}/missions/${missionId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedMissionData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Mission updated:", data);
+                displayMissionData(data);
+            })
+            .catch(error => console.error("Error updating mission:", error));
+    }
+
+    function deleteMission() {
+        const missionId = document.getElementById('deleteIDMission').value;
+
+        fetch(`${apiUrl}/missions/${missionId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Mission deleted successfully");
+                    displayMissionData();
+                } else {
+                    console.error("Error deleting mission");
+                }
+            })
+            .catch(error => console.error("Error deleting mission:", error));
+    }
+
+
+    function getAllMissionLogs() {
+        fetch('/missionlogs')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                displayMissionLogsData(data);
+            })
+            .catch(displayMissionLogsData());
+    }
+
+    function searchIdMissionLogs() {
+        const Id = document.getElementById('searchIdMissionLogs').value;
+        fetch(`/missionlogs/${Id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                displayMissionLogsData(data);
+            })
+            .catch(displayMissionLogsData());
+    }
+
+
+    function searchMissionMissionLogs() {
+        const IdM = document.getElementById('searchMIssionIdMissionLogs').value;
+        fetch(`/missionlogs/mission/${IdM}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                displayMissionLogsData(data);
+            })
+            .catch(displayMissionLogsData());
+    }
+
+    function addMissionLogs() {
+        const missionLogsDetails = document.getElementById("missionLogsDetails").value;
+        const missionId = document.getElementById("missionLogsMissionId").value;
+
+        const missionLogsData = {
+            logMessage: missionLogsDetails,
+            missionId: missionId
+        };
+
+        fetch('/missionlogs/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(missionLogsData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("MissionLogs added:", data);
+                displayMissionLogsData(data);
+            })
+            .catch(error => console.error("Error adding MissionLogs:", error));
+    }
+
+    function updateMissionLogs() {
+        const missionLogsId = document.getElementById('updateMissionLogsId').value;
+        const logMessageUP = document.getElementById('updateMissionLogsDetails').value;
+
+        const updatedMissionLogsData = {
+            id: missionLogsId,
+            logMessage: logMessageUP
+        };
+
+        Object.keys(updatedMissionLogsData).forEach(key => updatedMissionLogsData[key] === "" && delete updatedMissionLogsData[key]);
+
+        fetch(`/missionlogs/${missionLogsId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedMissionLogsData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("MissionLogs updated:", data);
+                displayMissionLogsData(data);
+            })
+            .catch(error => console.error("Error updating MissionLogs:", error));
+    }
+
+    function deleteMissionLogs() {
+        const missionLogsId = document.getElementById('deleteMissionLogsId').value;
+
+        fetch(`/missionlogs/${missionLogsId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("MissionLogs deleted successfully");
+                    displayMissionLogsData();
+                } else {
+                    console.error("Error deleting MissionLogs");
+                }
+            })
+            .catch(error => console.error("Error deleting MissionLogs:", error));
+    }
+
+
+    function getSpacesuits() {
+        fetch(`${apiUrl}/spacesuits`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacesuits:", data);
+                displaySpacesuitData(data);
+            })
+            .catch(displaySpacesuitData());
+    }
+
+    function searchIdSpacesuit() {
+        const Id = document.getElementById('searchIdSpacesuit').value;
+        fetch(`${apiUrl}/spacesuits/${Id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacesuits:", data);
+                displaySpacesuitData(data);
+            })
+            .catch(displaySpacesuitData());
+    }
+
+    function searchNameSpacesuit() {
+        const name = document.getElementById('searchNameSpacesuit').value;
+        fetch(`${apiUrl}/spacesuits/search/name/${name}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacesuits:", data);
+                displaySpacesuitData(data);
+            })
+            .catch(displaySpacesuitData());
+    }
+
+    function searchIdAstronautSpacesuit() {
+        const Id = document.getElementById('searchIdAstronautSpacesuit').value;
+        fetch(`${apiUrl}/spacesuits/search/spacesuit/${Id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacesuits:", data);
+                displaySpacesuitData(data);
+            })
+            .catch(displaySpacesuitData());
+    }
+
+    function addSpacesuit() {
+        const spacesuitModel = document.getElementById("spacesuitModel").value;
+        const AId = document.getElementById("AId").value;
+
+        const spacesuitData = {
+            model: spacesuitModel,
+            AId: AId
+        };
+
+        console.log("Spacesuit data:", spacesuitData);
+
+        fetch(`${apiUrl}/spacesuits/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(spacesuitData)
+        }).then(response => response.json()).then(data => {
+            console.log("Spacesuit added:", data);
+            displaySpacesuitData(data);
+        });
+    }
+
+    function updateSpacesuit() {
+        const spacesuitId = document.getElementById('updateIDSpacesuit').value;
+        const modelUP = document.getElementById('modelSpacesuitUpdate').value;
+
+        const updatedSpacesuitData = {
+            id: spacesuitId,
+            model: modelUP
+        };
+
+        Object.keys(updatedSpacesuitData).forEach(key => updatedSpacesuitData[key] === "" && delete updatedSpacesuitData[key]);
+
+        fetch(`${apiUrl}/spacesuits/${spacesuitId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedSpacesuitData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Spacesuit updated:", data);
+                displaySpacesuitData(data);
+            })
+            .catch(error => console.error("Error updating spacesuit:", error));
+    }
+
+    function deleteSpacesuit() {
+        const spacesuitId = document.getElementById('deleteIDSpacesuit').value;
+
+        fetch(`${apiUrl}/spacesuits/${spacesuitId}`, {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Spacesuit deleted successfully");
+                    displaySpacesuitData();
+                } else {
+                    console.error("Error deleting spacesuit");
+                }
+            })
+            .catch(error => console.error("Error deleting spacesuit:", error));
+    }
+</script>
+
+
+</body>
+</html>
